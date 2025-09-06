@@ -22,7 +22,7 @@ from three_x_pay_sdk import ThreeXPayClient, CreatePayInRequest
 client = ThreeXPayClient(api_key="YOUR_API_KEY")
 
 # Health check
-client.ping()
+await client.ping()
 
 # Create payin
 req = CreatePayInRequest(
@@ -33,16 +33,12 @@ req = CreatePayInRequest(
     merchant_return_url="https://example.com/return",
     is_test=True,
 )
-created = client.create_payin(req)
+created = await client.create_payin(req)
 print(created.data.payment_url)
 
 # Get payin
-info = client.get_payin(created.data.id)
+info = await client.get_payin(created.data.id)
 print(info.data.status)
-
-# Alternatively, use context manager
-with ThreeXPayClient(api_key="YOUR_API_KEY") as client:
-    client.ping()
 ```
 
 Webhook signature
