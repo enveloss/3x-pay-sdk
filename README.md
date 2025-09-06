@@ -12,37 +12,37 @@ Installation
 pip install three-x-pay-sdk
 ```
 
-Quick start (async)
+Quick start (sync)
 -----------
 
 ```python
-import asyncio
 from three_x_pay_sdk import ThreeXPayClient, CreatePayInRequest
 
 
-async def main():
-    async with ThreeXPayClient(api_key="YOUR_API_KEY") as client:
-        # Health check
-        await client.ping()
+client = ThreeXPayClient(api_key="YOUR_API_KEY")
 
-        # Create payin
-        req = CreatePayInRequest(
-            amount=10.5,
-            currency="USDT",
-            merchant_order_id="order-123",
-            merchant_callback_url="https://example.com/webhook",
-            merchant_return_url="https://example.com/return",
-            is_test=True,
-        )
-        created = await client.create_payin(req)
-        print(created.data.payment_url)
+# Health check
+client.ping()
 
-        # Get payin
-        info = await client.get_payin(created.data.id)
-        print(info.data.status)
+# Create payin
+req = CreatePayInRequest(
+    amount=10.5,
+    currency="USDT",
+    merchant_order_id="order-123",
+    merchant_callback_url="https://example.com/webhook",
+    merchant_return_url="https://example.com/return",
+    is_test=True,
+)
+created = client.create_payin(req)
+print(created.data.payment_url)
 
+# Get payin
+info = client.get_payin(created.data.id)
+print(info.data.status)
 
-asyncio.run(main())
+# Alternatively, use context manager
+with ThreeXPayClient(api_key="YOUR_API_KEY") as client:
+    client.ping()
 ```
 
 Webhook signature

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Any, Dict, Optional
+import asyncio
 
 import httpx
 
@@ -33,6 +34,31 @@ class ThreeXPayClient:
 
     async def __aexit__(self, exc_type, exc, tb) -> None:  # noqa: D401
         await self.aclose()
+
+    def __del__(self) -> None:  # best-effort cleanup
+        try:
+            if not self._owns_client:
+                return
+            client = getattr(self, "_client", None)
+            if client is None:
+                return
+            try:
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                # No running loop: create a temporary one
+                try:
+                    asyncio.run(client.aclose())
+                except Exception:
+                    pass
+            else:
+                # Running loop: schedule background close
+                try:
+                    loop.create_task(client.aclose())
+                except Exception:
+                    pass
+        except Exception:
+            # Never raise from __del__
+            pass
 
     # --- Public API methods ---
     async def ping(self) -> Dict[str, Any]:
