@@ -5,8 +5,8 @@ description = "Python SDK for 3X PAY API"
 authors = []
 license = "MIT"
 readme = "README.md"
-homepage = "https://app.3xpay.org"
-repository = "https://app.3xpay.org"
+homepage = "https://github.com/enveloss/3x-pay-sdk"
+repository = "https://github.com/enveloss/3x-pay-sdk"
 keywords = ["payments", "crypto", "sdk", "api", "3xpay"]
 classifiers = [
   "Programming Language :: Python :: 3",
