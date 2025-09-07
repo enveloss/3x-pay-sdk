@@ -16,7 +16,7 @@ Quick start
 -----------
 
 ```python
-from three_x_pay_sdk import ThreeXPayClient, CreatePayInRequest
+from three_x_pay_sdk import ThreeXPayClient
 
 
 client = ThreeXPayClient(api_key="YOUR_API_KEY")
