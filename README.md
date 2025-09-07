@@ -12,7 +12,7 @@ Installation
 pip install three-x-pay-sdk
 ```
 
-Quick start (sync)
+Quick start
 -----------
 
 ```python
