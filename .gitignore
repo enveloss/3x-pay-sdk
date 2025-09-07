@@ -15,3 +15,4 @@ htmlcov/
 poetry.lock
 .venv
 dist
+test.py

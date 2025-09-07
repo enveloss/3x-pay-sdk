@@ -1,29 +1,12 @@
 from __future__ import annotations
 
 from datetime import datetime
-from enum import Enum
-from typing import Literal, Optional
+from typing import Literal, Optional, Any
 
 from pydantic import BaseModel, ConfigDict
 
 
-class PayInRequestStatus(str, Enum):
-    waiting = "waiting"
-    canceled = "canceled"
-    paid = "paid"
-    failed = "failed"
-
-
-class CreatePayInRequest(BaseModel):
-    amount: float
-    currency: str
-    merchant_order_id: str
-    merchant_callback_url: Optional[str] = None
-    merchant_return_url: Optional[str] = None
-    is_test: bool
-
-    model_config = ConfigDict(extra="ignore")
-
+PayInRequestStatus = Literal["waiting", "canceled", "paid", "failed"]
 
 class PayInRequestSchema(BaseModel):
     id: int
@@ -43,9 +26,9 @@ class PayInRequestSchema(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
 
-class SuccessResponsePayInRequest(BaseModel):
+class SuccessResponse(BaseModel):
     success: Literal[True] = True
-    data: PayInRequestSchema
+    data: Any
 
     model_config = ConfigDict(extra="ignore")
 

@@ -25,7 +25,7 @@ client = ThreeXPayClient(api_key="YOUR_API_KEY")
 await client.ping()
 
 # Create payin
-req = CreatePayInRequest(
+created = await client.create_payin(
     amount=10.5,
     currency="USDT",
     merchant_order_id="order-123",
@@ -33,12 +33,11 @@ req = CreatePayInRequest(
     merchant_return_url="https://example.com/return",
     is_test=True,
 )
-created = await client.create_payin(req)
-print(created.data.payment_url)
+print(created.payment_url)
 
 # Get payin
-info = await client.get_payin(created.data.id)
-print(info.data.status)
+info = await client.get_payin(created.id)
+print(info.status)
 ```
 
 Webhook signature
