@@ -16,11 +16,18 @@ class ThreeXPayClient:
         self,
         api_key: str,
         *,
+        is_test: Optional[bool] = None,
+        merchant_callback_url: Optional[str] = None,
+        merchant_return_url: Optional[str] = None,
         base_url: str = "https://app.3xpay.org",
         timeout: float = 10.0,
         client: Optional[httpx.AsyncClient] = None,
     ) -> None:
         self._api_key = api_key
+        self._is_test = is_test
+        self._merchant_callback_url = merchant_callback_url
+        self._merchant_return_url = merchant_return_url
+
         self._base_url = base_url.rstrip("/")
         self._owns_client = client is None
         self._client = client or httpx.AsyncClient(base_url=self._base_url, timeout=timeout)
@@ -74,7 +81,7 @@ class ThreeXPayClient:
         amount: float,
         currency: str,
         merchant_order_id: str,
-        is_test: bool,
+        is_test: Optional[bool] = None,
         merchant_callback_url: Optional[str] = None,
         merchant_return_url: Optional[str] = None,
     ) -> PayInRequestSchema:
@@ -86,12 +93,10 @@ class ThreeXPayClient:
             "amount": amount,
             "currency": currency,
             "merchant_order_id": merchant_order_id,
-            "is_test": is_test,
+            "merchant_callback_url": merchant_callback_url or self._merchant_callback_url,
+            "merchant_return_url": merchant_return_url or self._merchant_return_url,
+            "is_test": is_test or self._is_test,
         }
-        if merchant_callback_url is not None:
-            payload["merchant_callback_url"] = merchant_callback_url
-        if merchant_return_url is not None:
-            payload["merchant_return_url"] = merchant_return_url
 
         response = await self._client.post(
             "/api/merchant/v1/payin",
