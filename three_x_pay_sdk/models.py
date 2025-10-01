@@ -5,8 +5,7 @@ from typing import Literal, Optional, Any
 
 from pydantic import BaseModel, ConfigDict
 
-
-PayInRequestStatus = Literal["waiting", "canceled", "paid", "failed"]
+PayInRequestStatus = Literal["waiting", "canceled", "paid", "failed", "expired"]
 
 class PayInRequestSchema(BaseModel):
     id: int
